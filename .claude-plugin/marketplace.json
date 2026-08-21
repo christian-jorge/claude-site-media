@@ -10,7 +10,7 @@
       "name": "design-to-mcp",
       "source": "./",
       "description": "Le um site ou um canvas, lista cada midia que falta com dimensao e custo, e gera imagem e video pelo Gemini gravando no arquivo que a pagina realmente pede.",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "author": {
         "name": "Christian Jorge"
       },

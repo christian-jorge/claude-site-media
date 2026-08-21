@@ -145,7 +145,7 @@ def gerar_gemini(item, referencias):
             if inline and inline.get("data"):
                 mime = inline.get("mimeType") or inline.get("mime_type") or "image/png"
                 return base64.b64decode(inline["data"]), mime
-    erro("o Gemini nao retornou imagem. Resposta: %s" % json.dumps(resposta)[:600])
+    erro(contrato.explicar_sem_imagem(resposta, cobrada=True))
 
 
 def gerar_openai(item, referencias):

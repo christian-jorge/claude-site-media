@@ -76,7 +76,8 @@ def _teto(nome, padrao):
 TETO_USD = _teto("MIDIA_TETO_USD", 5.0)              # acumulado em 24h
 TETO_CHAMADA_USD = _teto("MIDIA_TETO_CHAMADA_USD", 1.0)
 VALIDADE_ORCAMENTO_S = 3600
-# desligado nesta onda: o SKILL.md so passa a ensinar o token junto com o contrato v2
+# padrao desligado: o token vira exigencia so quando o usuario liga o campo no
+# formulario do /plugin. Sem ele a chamada passa, mas a resposta sai marcada.
 EXIGE_ORCAMENTO = (os.environ.get("MIDIA_EXIGE_ORCAMENTO", "") or "").strip().lower() \
     in ("1", "true", "sim", "on")
 ORCAMENTOS = {}
@@ -555,7 +556,10 @@ def primeira_imagem(resp):
                 mime = (inline.get("mimeType") or inline.get("mime_type")
                         or "image/png")
                 return base64.b64decode(inline["data"]), mime, len(cands)
-    raise Falha("resposta sem imagem: %s" % json.dumps(resp)[:600])
+    # o dump cru nao dizia as duas coisas que decidem o proximo passo: se o dinheiro
+    # ja saiu, e se repetir adianta. Depois de um bloqueio de seguranca, o palpite
+    # natural do agente e tentar de novo -- e pagar duas vezes pela mesma recusa.
+    raise Falha(contrato.explicar_sem_imagem(resp, cobrada=True))
 
 
 def _sem_cobranca(erro):
@@ -933,8 +937,9 @@ FERRAMENTAS = [
      "description": ("COBRA na conta Google do usuario e o gasto e irreversivel: US$ 0,134 por "
                      "imagem 1K/2K no Nano Banana Pro, US$ 0,24 em 4K. So chame depois de rodar "
                      "estimar_custo, mostrar a lista ao usuario e receber aprovacao explicita "
-                     "(PARADA 2). Gera uma imagem, salva em public/assets/<id>.jpg ja "
-                     "reamostrada para largura x altura. Um item por chamada."),
+                     "(PARADA 2). Gera uma imagem e grava no `destino` do item do plano, "
+                     "reamostrada para largura x altura (sem `plano`, cai no fallback "
+                     "public/assets/<id>.jpg). Um item por chamada."),
      "inputSchema": {"type": "object", "required": ["id", "prompt"], "properties": {
          "id": {"type": "string", "description": "id do item no plano"},
          "prompt": {"type": "string"},
@@ -998,7 +1003,8 @@ FERRAMENTAS = [
 
     {"name": "status_video", "handler": t_status_video,
      "description": ("NAO cobra. Consulta a operacao do Veo (long-poll de ate ~55s) e, quando "
-                     "pronta, baixa o mp4 para public/assets/<id>-original.mp4. Pode devolver "
+                     "pronta, baixa o mp4 para <destino do item sem extensao>-original.mp4 "
+                     "(sem `plano`, cai no fallback public/assets/<id>-original.mp4). Pode devolver "
                      "'ainda processando' varias vezes: chame de novo, nao resubmeta o video."),
      "inputSchema": {"type": "object", "required": ["job"], "properties": {
          "job": {"type": "string", "description": "nome da operacao devolvido por gerar_video"},
@@ -1157,6 +1163,10 @@ def main():
     log("teto: US$ %s por chamada, US$ %s em 24h | ledger: %s"
         % (TETO_CHAMADA_USD if TETO_CHAMADA_USD is not None else "off",
            TETO_USD if TETO_USD is not None else "off", ledger()))
+    log("orcamento da PARADA 2: %s"
+        % ("EXIGIDO (gerar sem o token falha antes de cobrar)" if EXIGE_ORCAMENTO else
+           "nao exigido -- a geracao sem aval passa e sai marcada na resposta. Ligue em "
+           "/plugin (Exigir aprovacao de custo) ou com MIDIA_EXIGE_ORCAMENTO=1"))
     if SEM_PILLOW:
         log("AVISO: Pillow ausente (%s): gerar_imagem vai RECUSAR antes de cobrar"
             % SEM_PILLOW)

@@ -18,6 +18,7 @@ Tres principios. Se um patch contrariar um deles, o patch esta errado:
 
 Sem dependencia externa. Escrito em estilo compativel com Python 3.9.
 """
+import json
 import os
 import posixpath
 import re
@@ -98,6 +99,72 @@ def custo_video(modelo, resolucao, segundos):
 def combo_de_video_valido(resolucao, segundos):
     """O Veo amarra resolucao e duracao: 1080p so existe com 8 segundos."""
     return not (resolucao == "1080p" and int(segundos or 0) != 8)
+
+
+# ------------------------------------------------------- resposta sem imagem
+
+# Motivos com que a API recusa o CONTEUDO. Repetir a mesma chamada e ser recusado de
+# novo -- e cada tentativa passa pelo POST, que e onde o dinheiro sai. O casamento e
+# por substring de proposito: a lista de finishReason do Gemini cresce, e um motivo
+# novo que ninguem previu ainda cai no caminho generico em vez de virar retry cego.
+RECUSA_DE_CONTEUDO = ("SAFETY", "PROHIBITED", "BLOCKLIST", "RECITATION", "SPII")
+
+
+def motivos_sem_imagem(resp):
+    """(motivos, textos) de uma resposta que nao trouxe imagem.
+
+    Le camelCase e snake_case porque a API responde nas duas formas conforme a rota.
+    """
+    motivos, textos = [], []
+    fb = resp.get("promptFeedback") or resp.get("prompt_feedback") or {}
+    for chave in ("blockReason", "block_reason"):
+        if fb.get(chave):
+            motivos.append("promptFeedback.blockReason=%s" % fb[chave])
+    for chave in ("blockReasonMessage", "block_reason_message"):
+        if fb.get(chave):
+            textos.append(str(fb[chave]))
+    for cand in resp.get("candidates", []) or []:
+        fim = cand.get("finishReason") or cand.get("finish_reason")
+        if fim:
+            motivos.append("finishReason=%s" % fim)
+        for parte in (cand.get("content", {}) or {}).get("parts", []) or []:
+            if parte.get("text"):
+                textos.append(str(parte["text"]).strip())
+    return motivos, textos
+
+
+def explicar_sem_imagem(resp, cobrada=True):
+    """A mensagem de uma geracao que voltou sem imagem.
+
+    Existe porque o dump de JSON cru nao dizia as duas coisas que decidem o proximo
+    passo do agente: se o dinheiro ja saiu, e se repetir a chamada adianta. Sem isso
+    o palpite natural depois de um bloqueio de seguranca e tentar de novo -- e pagar
+    duas vezes pela mesma recusa.
+    """
+    motivos, textos = motivos_sem_imagem(resp)
+    linhas = ["a API respondeu SEM imagem%s"
+              % (": " + "; ".join(motivos) if motivos else " e sem motivo declarado")]
+    if textos:
+        linhas.append("o modelo devolveu texto no lugar da imagem: %s"
+                      % " | ".join(t[:300] for t in textos[:2]))
+    if any(marca in m.upper() for m in motivos for marca in RECUSA_DE_CONTEUDO):
+        linhas.append(
+            "Isto e recusa de CONTEUDO, nao falha tecnica: a mesma chamada sera recusada "
+            "de novo. Reescreva o prompt atacando o que foi recusado -- rosto de pessoa "
+            "real, marca ou logotipo, texto na imagem, violencia, semelhanca com obra "
+            "protegida -- e leve a mudanca ao usuario antes de chamar outra vez.")
+    else:
+        linhas.append(
+            "Nao ha motivo de recusa de conteudo na resposta: antes de repetir, confira o "
+            "modelo, a razao e o tamanho pedidos. Repetir sem mudar nada tende a devolver "
+            "o mesmo.")
+    if cobrada:
+        linhas.append(
+            "ATENCAO: esta chamada ja passou do POST e ja esta lancada no ledger -- trate "
+            "como PAGA. Nao repita como retry cego; leve ao usuario.")
+    if not motivos and not textos:
+        linhas.append("resposta crua: %s" % json.dumps(resp)[:400])
+    return "\n".join(linhas)
 
 
 # ------------------------------------------------------------------ razao

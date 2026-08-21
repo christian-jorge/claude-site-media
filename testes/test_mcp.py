@@ -90,11 +90,49 @@ class Imagem(Base):
                          "o -original desta chamada devia ter sido descartado")
 
     def test_resposta_sem_imagem_vira_falha_legivel(self):
+        """Bloqueio de conteudo e a unica falha que acontece DEPOIS do POST.
+
+        A mensagem antiga era um dump de JSON: passava neste teste porque o dump
+        contem a string, e nao dizia nem que o dinheiro ja tinha saido nem que
+        repetir seria recusado de novo -- as duas coisas que decidem o proximo passo.
+        """
         self.duble([(GERAR, json.dumps({"candidates": [
             {"finishReason": "IMAGE_SAFETY", "content": {"parts": []}}]}).encode())])
         with self.assertRaises(M.Falha) as e:
             M.t_gerar_imagem(self.item())
-        self.assertIn("IMAGE_SAFETY", str(e.exception))
+        msg = str(e.exception)
+        self.assertIn("IMAGE_SAFETY", msg)
+        self.assertIn("recusa de CONTEUDO", msg,
+                      "sem isto o palpite natural e repetir a mesma chamada")
+        self.assertIn("PAGA", msg, "a chamada passou do POST: tratar como paga")
+        # e a mensagem tem de ser verdade: a linha existe mesmo no ledger
+        linhas = [l for l in open(self.ledger, encoding="utf-8").read().splitlines() if l]
+        self.assertEqual(len(linhas), 1)
+
+    def test_falha_tecnica_sem_imagem_nao_acusa_bloqueio(self):
+        """Nem toda resposta sem imagem e censura: dizer que e manda reescrever a toa."""
+        self.duble([(GERAR, json.dumps({"candidates": [
+            {"finishReason": "MAX_TOKENS",
+             "content": {"parts": [{"text": "nao consegui gerar"}]}}]}).encode())])
+        with self.assertRaises(M.Falha) as e:
+            M.t_gerar_imagem(self.item())
+        msg = str(e.exception)
+        self.assertIn("MAX_TOKENS", msg)
+        self.assertNotIn("recusa de CONTEUDO", msg)
+        self.assertIn("nao consegui gerar", msg,
+                      "o texto que o modelo devolveu no lugar da imagem e o diagnostico")
+
+    def test_bloqueio_no_prompt_tambem_e_lido(self):
+        """A recusa pode vir em promptFeedback, antes de haver candidato."""
+        self.duble([(GERAR, json.dumps(
+            {"promptFeedback": {"blockReason": "PROHIBITED_CONTENT",
+                                "blockReasonMessage": "pedido recusado"}}).encode())])
+        with self.assertRaises(M.Falha) as e:
+            M.t_gerar_imagem(self.item())
+        msg = str(e.exception)
+        self.assertIn("PROHIBITED_CONTENT", msg)
+        self.assertIn("recusa de CONTEUDO", msg)
+        self.assertIn("pedido recusado", msg)
 
     def test_5xx_nao_repete_o_post_que_cobra(self):
         """A regressao mais cara do repo: um 503 virava tres cobrancas."""

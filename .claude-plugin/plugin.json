@@ -1,7 +1,7 @@
 {
   "name": "design-to-mcp",
   "displayName": "Design to MCP",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Le um site ou um canvas, lista cada midia que falta com dimensao e custo, e gera imagem e video pelo Gemini gravando no arquivo que a pagina realmente pede.",
   "author": {
     "name": "Christian Jorge",
@@ -40,8 +40,8 @@
     "exige_orcamento": {
       "type": "boolean",
       "title": "Exigir aprovacao de custo antes de cada geracao",
-      "description": "Ligado, gerar sem o token que a estimativa emite FALHA antes de cobrar. Desligado, passa mas a resposta vem marcada 'gerado SEM orcamento aprovado'.",
-      "default": false
+      "description": "Ligado (padrao), gerar sem o token que a estimativa emite FALHA antes de cobrar -- e a PARADA 2 vira trava, nao lembrete. Desligue so se algum fluxo seu gera fora da skill: ai a chamada passa, mas a resposta vem marcada 'gerado SEM orcamento aprovado'.",
+      "default": true
     }
   }
 }
