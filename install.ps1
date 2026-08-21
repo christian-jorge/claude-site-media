@@ -3,9 +3,12 @@
   Instala a skill design-to-mcp e o comando /gerar-imagem no Claude Code.
 
 .DESCRIPTION
-  A chave do Gemini NUNCA e passada como argumento: `-Chave AI...` ficaria no
+  A chave do Gemini nao e argumento DESTE script: `-Chave AI...` ficaria no
   historico do PSReadLine e na linha de comando do processo. Use -PedirChave,
-  que le sem ecoar na tela.
+  que le sem ecoar na tela. Ela ainda aparece no argv do `claude mcp add` que roda
+  em seguida (a CLI so aceita o valor assim) e fica em repouso no registro do MCP.
+  Para evitar os dois, use -SemMcp, defina GEMINI_API_KEY no ambiente do Windows e
+  registre sem --env.
 
 .EXAMPLE
   .\install.ps1                  # instala para o usuario (~/.claude)
@@ -135,13 +138,14 @@ if ($SemMcp) {
     $segura = Read-Host 'Chave do Gemini (nao aparece na tela)' -AsSecureString
     $chave = [System.Net.NetworkCredential]::new('', $segura).Password
     if (-not $chave) { Write-Host 'chave vazia; nada foi registrado.' -ForegroundColor Yellow; exit 2 }
-    # a chave vai pelo ambiente do processo filho, nao no argv
-    $env:GEMINI_API_KEY = $chave
+    # `claude mcp add` so aceita o valor como ARGUMENTO: nao ha caminho por stdin. A
+    # chave aparece no argv deste unico processo e fica em repouso no registro do MCP.
+    # Para nao deixa-la em nenhum dos dois: defina GEMINI_API_KEY no ambiente do
+    # Windows e registre sem --env, que o servidor le do proprio os.environ.
     try {
-        & claude mcp add google-midia -s $escopoMcp --env "GEMINI_API_KEY=$env:GEMINI_API_KEY" -- "$exePy" "$servidor"
+        & claude mcp add google-midia -s $escopoMcp --env "GEMINI_API_KEY=$chave" -- "$exePy" "$servidor"
         if ($?) { Write-Host "  registrado no escopo $escopoMcp. Confira com: claude mcp list" -ForegroundColor Green }
     } finally {
-        Remove-Item Env:GEMINI_API_KEY -ErrorAction SilentlyContinue
         $chave = $null
     }
 } else {

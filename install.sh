@@ -14,8 +14,11 @@ Instala a skill design-to-mcp e o comando /gerar-imagem no Claude Code.
   ./install.sh --sem-mcp       nao registra nada, so imprime o comando
   ./install.sh -h | --help     esta ajuda
 
-A chave NUNCA e passada como argumento: `--chave AI...` ficaria no historico do
+A chave nao e argumento DESTE script: `--chave AI...` ficaria no historico do
 shell e na linha de comando do processo, visivel para qualquer `ps` da maquina.
+Ela ainda aparece no argv do `claude mcp add` que roda em seguida (a CLI so aceita
+o valor assim) e fica em repouso no registro do MCP. Para evitar os dois, use
+--sem-mcp, defina GEMINI_API_KEY no ambiente do sistema e registre sem --env.
 FIM
 }
 
@@ -155,9 +158,12 @@ echo "MCP google-midia:"
 if [ "$SEM_MCP" -eq 1 ]; then
   echo "  --sem-mcp: nada foi registrado."
 elif [ -n "$CHAVE" ]; then
-  # a chave vai pelo ambiente do processo filho, nao no argv
-  GEMINI_API_KEY="$CHAVE" claude mcp add google-midia -s "$ESCOPO_MCP" \
-    --env "GEMINI_API_KEY=$GEMINI_API_KEY" -- "${PY_EXE:-python}" "$SERVIDOR"
+  # `claude mcp add` so aceita o valor como ARGUMENTO: nao ha caminho por stdin. A
+  # chave aparece no argv deste unico processo e fica em repouso no registro do MCP.
+  # Para nao deixa-la em nenhum dos dois: defina GEMINI_API_KEY no ambiente do
+  # sistema e registre sem --env, que o servidor le do proprio os.environ.
+  claude mcp add google-midia -s "$ESCOPO_MCP" \
+    --env "GEMINI_API_KEY=$CHAVE" -- "${PY_EXE:-python}" "$SERVIDOR"
   unset CHAVE
   echo "  registrado no escopo $ESCOPO_MCP. Confira com: claude mcp list"
 else
