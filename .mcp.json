@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "google-midia": {
+      "command": "${user_config.python}",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/skills/design-to-mcp/ferramentas/mcp_google_midia.py"
+      ],
+      "env": {
+        "GEMINI_API_KEY": "${user_config.gemini_api_key}",
+
+        "MIDIA_RAIZ": "${CLAUDE_PROJECT_DIR}",
+
+        "MIDIA_LEDGER": "${CLAUDE_PLUGIN_DATA}/midias-gastos.jsonl",
+
+        "MIDIA_TETO_USD": "${user_config.teto_usd}",
+        "MIDIA_TETO_CHAMADA_USD": "${user_config.teto_chamada_usd}",
+        "MIDIA_EXIGE_ORCAMENTO": "${user_config.exige_orcamento}"
+      }
+    }
+  }
+}

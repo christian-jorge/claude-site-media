@@ -29,21 +29,37 @@ resolva as duas variáveis abaixo e use-as em tudo que vier depois:
 PowerShell, e o valor não sobrevive entre chamadas de ferramenta de qualquer forma.
 Resolva o caminho **uma vez**, no começo, e escreva-o por extenso em todo comando.
 
-A ordem importa: **a instalação do projeto vence a do usuário.** Procure nesta ordem e
-pare no primeiro que existir:
+A ordem importa: **o plugin vence, e a instalação do projeto vence a do usuário.**
+Procure nesta ordem e pare no primeiro que existir:
 
-1. `<raiz do projeto>/.claude/skills/design-to-mcp/ferramentas`
-2. `<home do usuário>/.claude/skills/design-to-mcp/ferramentas`
+1. `$CLAUDE_PLUGIN_ROOT/skills/design-to-mcp/ferramentas` — instalado por `/plugin`
+2. `<raiz do projeto>/.claude/skills/design-to-mcp/ferramentas`
+3. `<home do usuário>/.claude/skills/design-to-mcp/ferramentas`
+4. varredura em `~/.claude/plugins` — a rede de segurança, se a variável não chegar aqui
 
 ```bash
 # Bash / Git Bash
-ls .claude/skills/design-to-mcp/ferramentas 2>/dev/null || ls ~/.claude/skills/design-to-mcp/ferramentas
+ls "$CLAUDE_PLUGIN_ROOT/skills/design-to-mcp/ferramentas" 2>/dev/null \
+  || ls .claude/skills/design-to-mcp/ferramentas 2>/dev/null \
+  || ls ~/.claude/skills/design-to-mcp/ferramentas 2>/dev/null \
+  || find ~/.claude/plugins -type d -path '*design-to-mcp*' -name ferramentas 2>/dev/null | head -1
 ```
 ```powershell
 # PowerShell
-if (Test-Path .claude\skills\design-to-mcp\ferramentas) { dir .claude\skills\design-to-mcp\ferramentas }
-else { dir $HOME\.claude\skills\design-to-mcp\ferramentas }
+$c = @("$env:CLAUDE_PLUGIN_ROOT\skills\design-to-mcp\ferramentas",
+       ".claude\skills\design-to-mcp\ferramentas",
+       "$HOME\.claude\skills\design-to-mcp\ferramentas")
+$FERR = $c | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+if (-not $FERR) {
+  $FERR = (Get-ChildItem "$HOME\.claude\plugins" -Recurse -Directory -Filter ferramentas `
+            -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like '*design-to-mcp*' } |
+            Select-Object -First 1).FullName
+}
+dir $FERR
 ```
+
+Se as quatro falharem, a skill não está instalada: peça ao usuário
+`/plugin install design-to-mcp@claude-site-media` e pare por aqui.
 
 Você deve ver `contrato.py  ler_design.py  ler_site.py  gerar_midia.py`
 `mcp_google_midia.py  scroll-video.js`. Daqui em diante, onde este documento escreve

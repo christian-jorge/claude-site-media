@@ -1,0 +1,47 @@
+{
+  "name": "design-to-mcp",
+  "displayName": "Design to MCP",
+  "version": "2.0.0",
+  "description": "Le um site ou um canvas, lista cada midia que falta com dimensao e custo, e gera imagem e video pelo Gemini gravando no arquivo que a pagina realmente pede.",
+  "author": {
+    "name": "Christian Jorge",
+    "url": "https://github.com/christian-jorge"
+  },
+  "homepage": "https://github.com/christian-jorge/claude-site-media",
+  "repository": "https://github.com/christian-jorge/claude-site-media",
+  "license": "MIT",
+  "keywords": ["gemini", "nano-banana", "veo", "imagem", "video", "site", "midia"],
+  "userConfig": {
+    "gemini_api_key": {
+      "type": "string",
+      "title": "Chave da API do Gemini",
+      "description": "Pegue em https://aistudio.google.com/apikey. Fica no armazenamento seguro do Claude Code, nao em settings.json nem em nenhum arquivo do projeto.",
+      "sensitive": true,
+      "required": true
+    },
+    "python": {
+      "type": "string",
+      "title": "Interpretador Python (precisa ter Pillow)",
+      "description": "Deixe 'python' se o do PATH serve. Se a maquina tem mais de um, cole o caminho completo do que tem Pillow -- sem ela o servidor RECUSA gerar, antes de cobrar. Descubra com: python -c \"import PIL,sys;print(sys.executable)\"",
+      "default": "python"
+    },
+    "teto_usd": {
+      "type": "string",
+      "title": "Teto de gasto acumulado em 24h (US$)",
+      "description": "O servidor recusa a geracao que passar disso, contando o que ja gastou nas ultimas 24h. 'off' desliga a trava.",
+      "default": "5"
+    },
+    "teto_chamada_usd": {
+      "type": "string",
+      "title": "Teto por chamada (US$)",
+      "description": "Recusa uma unica geracao acima deste valor. Um clipe de 8s em 1080p custa cerca de US$ 3,20.",
+      "default": "1"
+    },
+    "exige_orcamento": {
+      "type": "boolean",
+      "title": "Exigir aprovacao de custo antes de cada geracao",
+      "description": "Ligado, gerar sem o token que a estimativa emite FALHA antes de cobrar. Desligado, passa mas a resposta vem marcada 'gerado SEM orcamento aprovado'.",
+      "default": false
+    }
+  }
+}

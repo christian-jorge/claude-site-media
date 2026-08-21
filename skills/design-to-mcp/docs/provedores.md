@@ -4,23 +4,22 @@ Carregue este arquivo quando: as ferramentas `mcp__google-midia__*` **não apare
 quando for preciso registrar o servidor pela primeira vez, ou quando quiser trocar de
 modelo. Numa rodada normal nada aqui é necessário.
 
-**Principal — MCP `google-midia`**, servidor stdio que acompanha a skill
-(`$FERR/mcp_google_midia.py`). Fala com a API do Gemini; a chave fica no `env` do
-registro, nunca no código. Registre uma vez, no escopo de usuário, para valer em
-qualquer projeto:
+**Principal — MCP `google-midia`**, servidor stdio declarado no `.mcp.json` do
+plugin. Ele sobe junto com o plugin; não há comando de registro a rodar. A chave
+vem do campo `sensitive` do formulário de `/plugin install`, que a guarda no
+armazenamento seguro do Claude Code — nunca no código, num argumento de comando
+ou num arquivo do projeto.
 
-```bash
-claude mcp add google-midia -s user --env GEMINI_API_KEY=<sua-chave>   -- python "$HOME/.claude/skills/design-to-mcp/ferramentas/mcp_google_midia.py"
-```
+Confira com `/mcp` — `google-midia` tem que aparecer conectado.
 
-Confira com `claude mcp list` — tem que aparecer `✔ Connected`.
+Se as ferramentas `mcp__google-midia__*` sumirem, o servidor não subiu. A causa quase
+sempre é o campo **Interpretador Python**: se o que está lá não existe ou não tem
+Pillow, o servidor recusa. Rode `/plugin` e corrija o campo. Não é token vencido — a
+chave do Gemini não expira como sessão. Editar o `.py` exige `/reload-plugins`, ou
+reiniciar o Claude Code, para valer.
 
-Se as ferramentas `mcp__google-midia__*` sumirem, o servidor não subiu: Python fora do
-PATH, caminho errado ou chave ausente. Não é token vencido — a chave do Gemini não expira
-como sessão. Editar o `.py` exige reiniciar o Claude Code para valer.
-
-**Onde os arquivos caem:** o servidor resolve caminho relativo a partir do cwd, ou seja, do
-projeto onde você abriu o Claude Code — `public/assets/hero.jpg` é do projeto, não da
+**Onde os arquivos caem:** o manifesto do plugin passa `${CLAUDE_PROJECT_DIR}` como raiz,
+ou seja, o projeto onde você abriu o Claude Code — não um cwd adivinhado — `public/assets/hero.jpg` é do projeto, não da
 skill. `listar_modelos` imprime a raiz em uso no rodapé; se ela vier errada, force com a
 variável `MIDIA_RAIZ` no registro do MCP.
 

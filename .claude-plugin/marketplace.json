@@ -1,0 +1,28 @@
+{
+  "name": "claude-site-media",
+  "owner": {
+    "name": "Christian Jorge",
+    "url": "https://github.com/christian-jorge"
+  },
+  "description": "Ferramentas para gerar a midia que falta num site: le a pagina, mede cada slot e grava no arquivo que ela pede.",
+  "plugins": [
+    {
+      "name": "design-to-mcp",
+      "source": "./",
+      "description": "Le um site ou um canvas, lista cada midia que falta com dimensao e custo, e gera imagem e video pelo Gemini gravando no arquivo que a pagina realmente pede.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Christian Jorge"
+      },
+      "keywords": [
+        "gemini",
+        "nano-banana",
+        "veo",
+        "imagem",
+        "video",
+        "site",
+        "midia"
+      ]
+    }
+  ]
+}

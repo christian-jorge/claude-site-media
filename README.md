@@ -22,36 +22,35 @@ de CSS — lendo os arquivos do projeto ou o HTML servido por um `localhost` no 
 
 ## Instalação
 
-```bash
-git clone https://github.com/christian-jorge/claude-site-media.git
-cd claude-site-media
+Dentro do Claude Code, em qualquer projeto:
 
-# macOS / Linux / Git Bash
-./install.sh
-
-# Windows (PowerShell)
-.\install.ps1
+```
+/plugin marketplace add christian-jorge/claude-site-media
+/plugin install design-to-mcp@claude-site-media
 ```
 
-O instalador copia a skill para `~/.claude/skills/` e o comando para `~/.claude/commands/`,
-checa as dependências e imprime o comando de registro do MCP. Instalado no usuário, vale em
-**todos** os seus projetos.
+Duas linhas, idênticas no Windows, no Linux e no macOS. Não há script para rodar, nada
+para copiar à mão e nenhum `claude mcp add` para montar: a skill, o comando
+`/gerar-imagem` e o servidor MCP do Gemini vêm no mesmo pacote. Versão nova depois é
+`/plugin marketplace update`.
 
-Opções: `--projeto` (instala só no projeto atual), `--forcar` (sobrescreve), `--chave AI...`
-(já registra o MCP). No PowerShell: `-Escopo projeto`, `-Forcar`, `-Chave`.
+### O formulário de instalação
 
-### Registrar o MCP
+O `/plugin install` pergunta o que o servidor precisa saber:
 
-A skill fala com o Gemini por um servidor MCP que acompanha o pacote. Pegue a chave em
-[aistudio.google.com/apikey](https://aistudio.google.com/apikey) e registre uma vez:
+| Campo | Para quê |
+|---|---|
+| **Chave da API do Gemini** | pegue em [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| **Interpretador Python** | deixe `python` se o do PATH serve; se a máquina tem mais de um, cole o caminho do que tem Pillow |
+| **Teto de 24 h / por chamada** | o servidor recusa a geração que passar disso, contando o que já gastou |
+| **Exigir aprovação de custo** | ligado, gerar sem o token da estimativa falha **antes** de cobrar |
 
-```bash
-claude mcp add google-midia -s user --env GEMINI_API_KEY=<sua-chave> \
-  -- python "$HOME/.claude/skills/design-to-mcp/ferramentas/mcp_google_midia.py"
-```
+A chave é um campo `sensitive`: a digitação vem mascarada e o valor vai para o
+**armazenamento seguro** do Claude Code. Ela não entra em `settings.json`, não entra em
+`~/.claude.json`, não passa pela linha de comando de processo nenhum e não encosta num
+arquivo do seu repositório. **As gerações são cobradas na sua conta Google.**
 
-`claude mcp list` tem que mostrar `✔ Connected`. A chave fica no registro local do Claude
-Code, nunca no repositório. **As gerações são cobradas na sua conta Google.**
+Depois de instalar, `/mcp` tem que mostrar `google-midia` conectado.
 
 ### Requisitos
 
@@ -144,12 +143,16 @@ o preço, mexa só nela — e confira contra a
 `estimar_custo` marca os itens que já existem em disco, mostra separado quanto custa gerar
 só o que falta, e **avisa quando o total é apenas um piso** — quando algum modelo do plano
 não está na tabela, o número vem marcado `(PISO)` em vez de sair silenciosamente menor.
-O servidor também tem teto próprio: `MIDIA_TETO_USD` (padrão US$ 5,00 em 24 h) e
-`MIDIA_TETO_CHAMADA_USD` (padrão US$ 1,00), lidos do registro do MCP. Com
-`MIDIA_EXIGE_ORCAMENTO=1` o token que a PARADA 2 emite deixa de ser opcional: gerar
-sem ele falha antes de cobrar. Sem a variável a chamada passa, mas a resposta vem
-marcada `AVISO: gerado SEM orcamento aprovado`. As três só mudam no registro do MCP,
-com reinício — é isso que as torna uma trava, e não um lembrete.
+O servidor também tem teto próprio, preenchido no formulário de instalação: um teto
+acumulado em 24 h (padrão US$ 5,00) e um por chamada (padrão US$ 1,00). O gasto é
+contado num ledger em disco gravado **antes** de cada POST cobrado, então sobrevive
+a `/compact`, a reinício e a troca de sessão — e o ledger é por máquina, não por
+projeto, senão o teto de 24 h valeria vezes o número de projetos abertos.
+
+Com **exigir aprovação de custo** ligado, gerar sem o token que a PARADA 2 emite
+falha antes de cobrar. Desligado, a chamada passa mas a resposta vem marcada
+`AVISO: gerado SEM orcamento aprovado`. Os três só mudam em `/plugin` e valem no
+próximo start do servidor — é isso que os torna uma trava, e não um lembrete.
 
 ## Limitações conhecidas
 

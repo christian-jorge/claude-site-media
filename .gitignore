@@ -3,6 +3,12 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# segredo nunca entra na arvore de trabalho de um repo publico, e um
+# `git add .` distraido basta para publicar a chave do Gemini
+.env
+.env.*
+!.env.example
+
 # artefatos de uma rodada de geracao, nunca do repositorio
 midias.json
 briefing.json
