@@ -36,6 +36,8 @@ if [ -d "$SKILL" ] && [ "$FORCAR" -eq 0 ]; then
   exit 1
 fi
 
+# copiar por cima deixaria para tras arquivo que a versao nova removeu
+rm -rf "$SKILL"
 mkdir -p "$SKILL" "$CMD"
 cp -R "$ORIGEM/skills/design-to-mcp/." "$SKILL/"
 cp "$ORIGEM/commands/gerar-imagem.md" "$CMD/"

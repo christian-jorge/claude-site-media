@@ -30,6 +30,8 @@ if ((Test-Path $destinoSkill) -and (-not $Forcar)) {
     exit 1
 }
 
+# copiar por cima deixaria para tras arquivo que a versao nova removeu
+if (Test-Path $destinoSkill) { Remove-Item -Recurse -Force $destinoSkill }
 New-Item -ItemType Directory -Force -Path $destinoSkill, $destinoCmd | Out-Null
 Copy-Item -Recurse -Force (Join-Path $origem 'skills\design-to-mcp\*') $destinoSkill
 Copy-Item -Force (Join-Path $origem 'commands\gerar-imagem.md') $destinoCmd
