@@ -1,0 +1,6 @@
+# LF no repositorio: install.sh com CRLF nao roda em Linux/macOS ("bad interpreter")
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.mp4 binary

@@ -1,0 +1,54 @@
+{
+  "provedor": "google-midia",
+  "saida": "public/assets",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "hero-poster",
+      "tipo": "imagem",
+      "largura": 1920,
+      "altura": 1080,
+      "aspect_ratio": "16:9",
+      "manter_original": true,
+      "nota": "arte dirigida do hero: e o poster E o primeiro frame do video (imagem_inicial)",
+      "prompt": "Fotografia editorial de um frasco de skincare sobre concreto claro, mao entrando pela direita, luz lateral do fim de tarde, sombras longas, paleta bege e terracota, 35mm, foco raso. Terco inferior esquerdo escuro e limpo para o titulo sobreposto. Sem texto, sem logotipo, sem marca d'agua.",
+      "aceite": "frasco nitido a direita, canto inferior esquerdo escuro o bastante para texto branco, nenhuma letra na imagem"
+    },
+    {
+      "id": "hero-video",
+      "tipo": "video",
+      "largura": 1280,
+      "altura": 720,
+      "duracao_s": 4,
+      "resolucao": "720p",
+      "aspect_ratio": "16:9",
+      "imagem_inicial": "public/assets/hero-poster-original.jpg",
+      "nota": "720p porque 1080p no Veo so sai com 8s; reencode obrigatorio com preparar_video",
+      "prompt": "Plano unico de quatro segundos, sem cortes: a camera sobe lentamente em torno do frasco sobre o concreto enquanto a luz do fim de tarde atravessa o vidro. Movimento de dolly em velocidade constante, enquadramento travado, sem zoom, sem tremor.",
+      "negative_prompt": "texto, legendas, marca d'agua, logotipo, pessoas, corte seco, zoom, tremor de camera, desenho animado",
+      "aceite": "movimento continuo numa direcao so, sem corte, primeiro frame igual ao hero-poster"
+    },
+    {
+      "id": "feature-1",
+      "tipo": "imagem",
+      "largura": 720,
+      "altura": 720,
+      "aspect_ratio": "1:1",
+      "nota": "card 01 - a copy fala da textura, entao a imagem e macro, nao packshot",
+      "prompt": "Close macro da textura do creme sendo espalhada, gotas de agua na superficie, iluminacao difusa de estudio, fundo desfocado terracota, 100mm macro, profundidade minima. Sem texto, sem logotipo, sem embalagem visivel.",
+      "aceite": "textura ocupando a maior parte do quadro, sem frasco, sem rotulo legivel"
+    },
+    {
+      "id": "equipe-ana",
+      "tipo": "imagem",
+      "largura": 480,
+      "altura": 600,
+      "aspect_ratio": "4:5",
+      "referencias": ["public/assets/_ref/ana-model-sheet.jpg", "public/assets/_ref/ana-expressoes.jpg"],
+      "nota": "personagem recorrente: as duas folhas de referencia vem antes de qualquer cena",
+      "prompt": "A mesma personagem das imagens de referencia, retrato de tres quartos em luz de janela, expressao serena, fundo bege liso, 85mm.",
+      "aceite": "mesmo rosto, mesmo cabelo e mesma roupa das folhas de referencia"
+    }
+  ]
+}
