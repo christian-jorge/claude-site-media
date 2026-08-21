@@ -1,6 +1,6 @@
 ---
 name: design-to-mcp
-description: Gera imagens e vídeos de IA (Nano Banana Pro e Veo 3.1) para as áreas de mídia de uma página, com prompts ancorados na copy de cada bloco — seja um canvas do /design (artboards .dc.html) virando landing page nova, seja um site que já existe e roda (HTML, React/Next, Vue, Svelte, Astro, PHP e background-image de CSS), incluindo vídeo animado por rolagem. Use quando o pedido for "transforme o canvas em site", "gere as imagens do meu site", "criar a mídia dessa seção", "trocar essa imagem", "substituir as fotos da página", "preencher as imagens que faltam", "as imagens estão quebradas", "quero um vídeo no hero", "gerar com Nano Banana ou Veo", "/design-to-mcp" ou "/gerar-imagem".
+description: Gera imagens e vídeos de IA (Nano Banana Pro e Veo 3.1) para as áreas de mídia de uma página, com prompts ancorados na copy de cada bloco — seja um canvas do /design (artboards .dc.html) virando landing page nova, seja um site que já existe e roda (HTML, React/Next, Vue, Svelte, Astro, Markdown/MDX, PHP e temas de template como Liquid, Twig, Blade e Handlebars, mais background-image de CSS), incluindo vídeo animado por rolagem. Use quando o pedido for "transforme o canvas em site", "gere as imagens do meu site", "criar a mídia dessa seção", "trocar essa imagem", "substituir as fotos da página", "preencher as imagens que faltam", "as imagens estão quebradas", "quero um vídeo no hero", "gerar com Nano Banana ou Veo", "/design-to-mcp" ou "/gerar-imagem".
 ---
 
 # design-to-mcp
@@ -20,9 +20,10 @@ custo (PARADA 2) e a prova de que o arquivo caiu no lugar (PARADA 3).
 Os scripts moram junto deste arquivo, não no projeto do usuário. Antes do primeiro comando,
 resolva as duas variáveis abaixo e use-as em tudo que vier depois:
 
-- **`$SKILL`** — a pasta que contém este `SKILL.md`. Instalada no usuário é
-  `$HOME/.claude/skills/design-to-mcp`; instalada no projeto é
-  `<projeto>/.claude/skills/design-to-mcp`. Se as duas existirem, a do projeto vence.
+- **`$SKILL`** — a pasta que contém este `SKILL.md`. Instalada por `/plugin` — o caminho
+  normal — é `$CLAUDE_PLUGIN_ROOT/skills/design-to-mcp`, dentro de
+  `~/.claude/plugins/cache/claude-site-media/design-to-mcp/<versao>/`. Copiada à mão, é
+  `<projeto>/.claude/skills/design-to-mcp` ou `$HOME/.claude/skills/design-to-mcp`.
 - **`$FERR`** — `$SKILL/ferramentas`.
 
 **Não use variável de shell aqui.** `FERR="..."` é sintaxe de Bash e não roda no
@@ -142,8 +143,10 @@ python "$FERR/ler_site.py" --url http://localhost:3000 --url http://localhost:30
 python "$FERR/ler_site.py" . --so-faltando --plano midias.json
 ```
 
-Ele lê `.html`, `.jsx/.tsx`, `.vue`, `.svelte`, `.astro`, `.php` e o `background-image`
-de `.css/.scss`, e devolve, por slot:
+Ele lê `.html/.htm`, `.jsx/.tsx`, `.vue`, `.svelte`, `.astro`, `.md/.mdx`, os templates de
+servidor (`.php`, `.blade.php`, `.liquid`, `.njk`, `.hbs`, `.twig`, `.ejs`, `.erb`,
+`.cshtml`) e o `background-image` de `.css/.scss/.sass/.less` — um tema Shopify ou um
+projeto Rails entram pela mesma porta que um `index.html`. Devolve, por slot:
 
 - **dimensão de exibição** e razão, resolvidas nesta ordem: atributo `width`/`height` →
   `style` inline → regra de CSS pela classe/id → `aspect-ratio`. O campo
@@ -174,6 +177,15 @@ Cuidados desta via:
 - **`src` dinâmico** (`src={hero}`, `:src="foto"`, `<?= $img ?>`) não diz qual arquivo é.
   Descubra para onde a variável aponta antes de decidir o `id` do asset, senão você gera
   um arquivo que a página nunca vai carregar.
+- **O que fica de fora, e como olhar.** O bloco `-- FORA DA LISTA --` do rodapé nomeia
+  cada slot que o extractor conhece mas não pôs na lista, com o motivo: já existe em
+  disco, hospedado fora do projeto, ou asset de bundler. `--incluir-externos` traz os dois
+  últimos para dentro — só faz sentido quando você já sabe qual arquivo do projeto a
+  variável ou a URL de terceiro representa, senão o item entra sem `destino` e barra a
+  geração.
+- **Duas tags que pedem o mesmo `destino`** viram um item só, com `tambem em:` listando os
+  outros pontos da marcação — um arquivo, uma geração. A dedupe é pelo destino, não pelo
+  nome: dois `hero.jpg` em pastas diferentes continuam sendo dois itens e duas cobranças.
 - **Não invente slot.** Se o pedido é "um vídeo no topo" e não existe `<video>` lá, isso é
   mudança de marcação: proponha primeiro, não gere antes do aval.
 - **Este é o site do usuário, em produção.** Nunca sobrescreva um asset existente sem
@@ -389,6 +401,26 @@ o arquivo pago não aparece na página. Se o projeto não é o cwd do servidor, 
   `aceite` e o **veredito** de cada item, mais a lista do que ainda não foi gerado. Não gera
   nada e não cobra. Não escreva esse HTML na mão.
 
+### Quando a geração volta sem imagem
+
+A chamada cobrou e não veio arquivo: o modelo recusou o conteúdo, ou falhou por outro
+motivo. A ferramenta separa os dois casos, e a diferença decide o próximo passo.
+
+- **`recusa de CONTEUDO`** (`IMAGE_SAFETY`, `PROHIBITED_CONTENT`, `BLOCKLIST`,
+  `RECITATION`, `SPII`): repetir a mesma chamada é ser recusado de novo, pagando outra vez.
+  Ache o que foi recusado — rosto de pessoa real, marca ou logotipo, texto na imagem,
+  violência, semelhança com obra protegida —, reescreva o prompt atacando aquilo, e **leve
+  a mudança ao usuário antes de chamar de novo**. Se a recusa é da própria ideia do slot
+  (o pedido é a foto de uma pessoa real, por exemplo), o caminho não é outro prompt: veja
+  `$SKILL/docs/personagem.md`.
+- **falha técnica** (qualquer outro motivo, ou nenhum): confira modelo, razão e tamanho
+  antes de repetir. A mensagem traz o texto que o modelo devolveu no lugar da imagem, que
+  costuma ser o diagnóstico.
+
+Nos dois casos a resposta diz **`trate como PAGA`**, porque a chamada passou do POST e já
+está lançada no ledger. Isso **conta no total da rodada** que você reporta no fim, e conta
+no teto de 24 h. Nunca trate essa falha como um retry automático.
+
 **Parâmetros de controle** — é onde mora a diferença entre pedir e dirigir:
 
 | Parâmetro | Ferramenta | Para quê |
@@ -415,7 +447,8 @@ Duas rotas, e a escolha muda o resultado:
   construção.
 
 `preparar_video` não sobrescreve um poster que já exista no destino — avisa e mantém.
-Para forçar a extração assim mesmo, passe `poster: true` explícito.
+Para extrair do clipe assim mesmo, passe `sobrescrever_poster: true` — `poster: true` é o
+padrão e não desliga essa proteção.
 
 ## Etapa 4 — Aplicar e verificar
 
@@ -534,7 +567,7 @@ não olha o disco.
 Leia o rodapé:
 
 ```
-LISTADOS: 0 de 4 slot(s); 0 sem arquivo em disco; 0 sem dimensao declarada.
+LISTADOS: 4 de 4 slot(s); 0 sem arquivo em disco; 0 com dimensao suposta; 0 sem destino.
 ```
 
 - **zero `[ARQUIVO NAO EXISTE]` nos slots da rodada → rodada concluída.** Reporte os dois

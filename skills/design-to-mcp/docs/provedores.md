@@ -23,19 +23,54 @@ ou seja, o projeto onde você abriu o Claude Code — não um cwd adivinhado —
 skill. `listar_modelos` imprime a raiz em uso no rodapé; se ela vier errada, force com a
 variável `MIDIA_RAIZ` no registro do MCP.
 
-| Ferramenta | O que faz |
-|---|---|
-| `listar_modelos` | modelos de imagem e vídeo liberados para a chave |
-| `estimar_custo` | custo em USD do `midias.json` (ou de itens inline) — use na PARADA 2 |
-| `gerar_imagem` | Nano Banana Pro → `public/assets/<id>.jpg` já reamostrado |
-| `gerar_video` | Veo 3.1, submete e devolve o id da operação |
-| `status_video` | consulta a operação e baixa o mp4 quando pronta |
-| `preparar_video` | reencode de `$SKILL/docs/video.md` + poster, via ffmpeg |
-| `atualizar_inventario` | regrava `inventario_midias.html` a partir dos assets em disco (não cobra) |
+| Ferramenta | Cobra? | O que faz |
+|---|---|---|
+| `listar_modelos` | não | modelos de imagem e vídeo liberados para a chave; imprime a raiz em uso no rodapé |
+| `estimar_custo` | não | custo em USD do `midias.json` (ou de itens inline) e o token `orc-...` — é a ferramenta da PARADA 2 |
+| `gerar_imagem` | **sim** | Nano Banana Pro → grava no `destino` do item, recortado (não esticado) para a caixa do slot |
+| `gerar_video` | **sim** | Veo 3.1: submete, devolve o id da operação e não espera |
+| `status_video` | não | consulta a operação (long-poll ~55 s) e baixa `<destino sem extensão>-original.mp4` quando pronta |
+| `preparar_video` | não | reencode de `$SKILL/docs/video.md` + poster, via ffmpeg |
+| `atualizar_inventario` | não | regrava `inventario_midias.html` a partir dos assets em disco |
+
+**Toda chamada leva `plano: "midias.json"`.** É de lá que sai o `destino`; sem ele a
+ferramenta cai no default `public/assets/<id>.jpg` — pasta e extensão erradas, e o arquivo
+pago não aparece na página. As duas que cobram declaram `destructiveHint: true` no schema,
+que é o que faz o cliente MCP pedir confirmação.
 
 Modelos padrão: `gemini-3-pro-image-preview` (imagem) e `veo-3.1-fast-generate-preview`
 (vídeo). Dá para trocar por chamada (`modelo`) ou no `env` do registro
 (`GEMINI_IMAGE_MODEL`, `GEMINI_VIDEO_MODEL`).
+
+### O que o servidor lê do ambiente
+
+O `.mcp.json` do plugin preenche tudo isto a partir do formulário de `/plugin install`;
+a tabela existe para o registro manual e para diagnóstico.
+
+| Variável | Padrão | Para quê |
+|---|---|---|
+| `GEMINI_API_KEY` | — | obrigatória; vem do campo `sensitive`, nunca de um arquivo do projeto |
+| `MIDIA_RAIZ` | cwd do servidor | raiz dos caminhos relativos; o plugin passa `${CLAUDE_PROJECT_DIR}` |
+| `MIDIA_LEDGER` | `<raiz>/.claude/state/midias-gastos.jsonl` | o `.jsonl` de gasto. O plugin o move para `${CLAUDE_PLUGIN_DATA}`, **por máquina**: no padrão, que é por projeto, o teto de 24 h valeria vezes o número de projetos abertos |
+| `MIDIA_TETO_USD` | `5` | teto acumulado em 24 h |
+| `MIDIA_TETO_CHAMADA_USD` | `1` | teto de uma única geração |
+| `MIDIA_EXIGE_ORCAMENTO` | **ligado** pelo formulário do plugin | `1`/`true`/`sim`/`on` liga; qualquer outro valor, **e a ausência da variável**, desliga. Ligado, gerar sem o token `orc-...` da PARADA 2 **falha antes de cobrar**; desligado, passa e a resposta vem marcada `AVISO: gerado SEM orcamento aprovado` |
+| `GEMINI_IMAGE_MODEL` / `GEMINI_VIDEO_MODEL` | os padrões acima | troca de modelo sem mexer no código |
+
+Nos dois tetos, `off` (ou `none`, `sem`, `-1`) desliga a trava e **`0` bloqueia tudo** —
+não é o mesmo campo em branco. Valor ilegível cai no padrão, em silêncio.
+
+`MIDIA_EXIGE_ORCAMENTO` é o único que **não** tem padrão seguro no código: ausente, ele
+fica desligado. É de propósito — se o padrão do código fosse "ligado", um formulário que
+serializasse o campo desmarcado como string vazia tornaria o *desligar* do usuário inerte,
+que é justamente a configuração-que-ninguém-lê. Quem registra o MCP à mão e quer a trava
+passa `MIDIA_EXIGE_ORCAMENTO=1` explicitamente; o servidor imprime o estado em que subiu na
+linha `orcamento da PARADA 2: ...`, então não há como ficar em dúvida.
+
+As três travas de custo só mudam em `/plugin` e valem no **próximo start do servidor** — é
+isso que as torna uma trava, e não um lembrete: não há como levantá-las de dentro da
+sessão. O gasto é gravado no ledger **antes** de cada POST cobrado, então sobrevive a
+`/compact`, a reinício e a troca de sessão.
 
 ### Custos (ai.google.dev/gemini-api/docs/pricing, 20/08/2026, USD)
 
@@ -51,8 +86,10 @@ Modelos padrão: `gemini-3-pro-image-preview` (imagem) e `veo-3.1-fast-generate-
 
 O vídeo é sempre a linha cara do plano. O combo padrão de hero — 4s a 720p no `fast` — sai
 por **US$ 0,40**, mais que três imagens Pro; o mesmo clipe em 1080p obriga a 8 segundos e
-custa **US$ 0,96**. Some com `estimar_custo` antes da PARADA 2; a mesma tabela vive no topo
-do `.py` e precisa ser revisada junto com a página de preços.
+custa **US$ 0,96**. Some com `estimar_custo` antes da PARADA 2. A tabela acima é cópia de leitura:
+a fonte é `CUSTO_IMAGEM`/`CUSTO_VIDEO_S` em `$FERR/contrato.py`, de onde o MCP, o fallback
+e o `--dry-run` leem. O casamento é por **prefixo**, para que um id datado
+(`-preview`, `-001`) não caia fora da tabela e suma do total da PARADA 2.
 
 **O Veo amarra resolução e duração:** 1080p só sai em **8 segundos**; 4s e 6s exigem 720p.
 Pedir 1080p com 4s devolve `400 INVALID_ARGUMENT` — não chega a cobrar, mas custa uma ida

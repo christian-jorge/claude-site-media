@@ -26,10 +26,14 @@ Adicione a classe `scroll-driven` e inclua o script:
        src="/assets/hero.mp4"
        poster="/assets/hero-poster.jpg"
        width="1440" height="810"
+       data-scroll-start="auto"
        muted playsinline preload="auto"></video>
 
 <script src="/js/scroll-video.js"></script>
 ```
+
+`data-scroll-start="auto"` está aí porque este exemplo é um hero, **no topo da página** —
+veja o primeiro item da lista abaixo. Num vídeo que entra pelo meio da página, tire.
 
 **São URLs servidas, não caminhos de disco.** `public/assets/hero.mp4` é onde o arquivo
 *mora*; o navegador pede `/assets/hero.mp4`, porque `public/` é a raiz que a build serve.
@@ -62,6 +66,10 @@ ffmpeg -i entrada.mp4 -an -vf "scale=1440:-2,fps=30" \
        -c:v libx264 -crf 24 -g 1 -keyint_min 1 -pix_fmt yuv420p \
        -movflags +faststart public/assets/hero.mp4
 ```
+
+Na prática você não digita isso: `preparar_video` monta exatamente este comando, com estes
+padrões (`largura` 1440, `fps` 30, `crf` 24), e ainda extrai o poster. A linha está aqui
+para quando não houver MCP — e para explicar cada flag:
 
 - `-an` remove o áudio (o vídeo é mudo de qualquer forma; corta peso).
 - `-g 1 -keyint_min 1` põe keyframe em todos os frames — arquivo maior, seek instantâneo.
