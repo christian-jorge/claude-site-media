@@ -1,0 +1,12 @@
+:root{
+  --bg: #14100d;
+  --areia: #e8dccb;
+  --terracota: #b4552d;
+  --texto: #f4efe7;
+}
+body{background:var(--bg);color:var(--texto);font-family:'Fraunces',Georgia,serif}
+.hero-video{width:1280px;height:720px;object-fit:cover}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card .card-media{width:420px;height:315px;object-fit:cover}
+.faixa-rodape{background-image:url('public/img/faixa-ateliê.jpg');width:1440px;height:360px}
+.topo h1{color:var(--areia)}

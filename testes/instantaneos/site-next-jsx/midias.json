@@ -1,0 +1,99 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "public",
+  "saida": "public/img",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "cozinha-em-operacao",
+      "tipo": "imagem",
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "aspect_ratio": "16:9",
+      "razao_exibicao": "2.000:1",
+      "largura": 1440,
+      "altura": 720,
+      "qualidade": "2K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "app/page.tsx:10",
+        "tag": "image",
+        "src": "{hero}",
+        "alt": "cozinha em operacao",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Marmita de comida de verdade",
+        "Cozinhamos de madrugada e entregamos antes das onze."
+      ],
+      "revisar": [
+        "sem destino conhecido (src-dinamico): descubra o arquivo que a pagina pede antes de gerar, senao o asset cai onde ninguem procura",
+        "a caixa do site e 2.000:1, que nao e razao da API: gera em 16:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "etapa-escolha",
+      "tipo": "imagem",
+      "destino": "public/img/etapa-escolha.jpg",
+      "destino_origem": "arquivo-existente",
+      "aspect_ratio": "3:2",
+      "largura": 480,
+      "altura": 320,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "app/page.tsx:16",
+        "tag": "img",
+        "src": "/img/etapa-escolha.jpg",
+        "alt": "tela de escolha",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Como funciona",
+        "Voce escolhe na segunda, a gente entrega na quarta."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {
+        "situacao": "gerado",
+        "arquivo": "public/img/etapa-escolha.jpg"
+      }
+    },
+    {
+      "id": "etapa-entrega",
+      "tipo": "imagem",
+      "destino": "public/img/etapa-entrega.jpg",
+      "destino_origem": "pasta-existente:public",
+      "aspect_ratio": "3:2",
+      "largura": 480,
+      "altura": 320,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "app/page.tsx:19",
+        "tag": "img",
+        "src": "/img/etapa-entrega.jpg",
+        "alt": "caixa termica",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Entrega refrigerada",
+        "Caixa termica que aguenta seis horas fora da geladeira."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

@@ -60,7 +60,7 @@ Code, nunca no repositório. **As gerações são cobradas na sua conta Google.*
 | Python 3 | todas as ferramentas |
 | [Pillow](https://pypi.org/project/pillow/) | reamostrar as imagens (`pip install pillow`) |
 | ffmpeg no PATH | só vídeo: reencode e poster |
-| Node | opcional, só para `node --check` |
+| Node | opcional, só para `node --check` depois de editar `.js` |
 
 ## Uso
 
@@ -72,8 +72,9 @@ Dentro do seu projeto, no Claude Code:
 /gerar-imagem http://localhost:3000    # aponta o servidor no ar
 ```
 
-A skill para **duas vezes** e espera você: uma no briefing dos slots encontrados, outra na
-lista de gerações com o custo em dólar somado. Nada é cobrado sem esse aval.
+A skill para **três vezes** e espera você: no briefing dos slots encontrados, na lista de
+gerações com o custo em dólar somado, e na conferência final — que re-lê a página e prova
+que cada arquivo pago está onde ela procura. Nada é cobrado sem esse aval.
 
 ### Direto no terminal, sem a skill
 
@@ -134,9 +135,21 @@ por frame, sem áudio, faststart) é obrigatório, não opcional. As regras de m
 Hero de 4s a 720p sai por US$ 0,40 — mais que três imagens Pro. **O Veo amarra resolução e
 duração:** 1080p só existe com 8 segundos; 4s e 6s exigem 720p.
 
-`estimar_custo` marca os itens que já existem em disco e mostra separado quanto custa gerar
-só o que falta. Confira a tabela contra a
-[página de preços](https://ai.google.dev/gemini-api/docs/pricing) de tempos em tempos.
+A tabela acima é um resumo. **A fonte é uma só:** `CUSTO_IMAGEM`/`CUSTO_VIDEO_S` em
+[`skills/design-to-mcp/ferramentas/contrato.py`](skills/design-to-mcp/ferramentas/contrato.py),
+de onde o MCP, o fallback e o `--dry-run` leem. Havia três cópias divergentes; ao atualizar
+o preço, mexa só nela — e confira contra a
+[página de preços](https://ai.google.dev/gemini-api/docs/pricing).
+
+`estimar_custo` marca os itens que já existem em disco, mostra separado quanto custa gerar
+só o que falta, e **avisa quando o total é apenas um piso** — quando algum modelo do plano
+não está na tabela, o número vem marcado `(PISO)` em vez de sair silenciosamente menor.
+O servidor também tem teto próprio: `MIDIA_TETO_USD` (padrão US$ 5,00 em 24 h) e
+`MIDIA_TETO_CHAMADA_USD` (padrão US$ 1,00), lidos do registro do MCP. Com
+`MIDIA_EXIGE_ORCAMENTO=1` o token que a PARADA 2 emite deixa de ser opcional: gerar
+sem ele falha antes de cobrar. Sem a variável a chamada passa, mas a resposta vem
+marcada `AVISO: gerado SEM orcamento aprovado`. As três só mudam no registro do MCP,
+com reinício — é isso que as torna uma trava, e não um lembrete.
 
 ## Limitações conhecidas
 
@@ -148,6 +161,22 @@ só o que falta. Confira a tabela contra a
   contado no rodapé e a skill pergunta em vez de inventar.
 - **Marca e semelhança**: os prompts pedem livery sem patrocinador e nada de texto, mas
   modelo de imagem erra. Olhe o que saiu antes de publicar.
+
+## Testes
+
+Stdlib pura: não precisa de pytest, não precisa de chave, não toca a rede.
+
+```bash
+python testes/rodar.py                  # tudo
+python testes/rodar.py test_extratores  # só um módulo
+python testes/rodar.py --atualizar      # regrava os instantâneos
+```
+
+Os instantâneos em `testes/instantaneos/` congelam o que o agente lê na PARADA 1 e o
+`midias.json` que vira contrato com o gerador — ou seja, **a contagem que a PARADA 2
+transforma em dólar**. Quando um diff aparece ali, leia linha a linha antes de regravar:
+aceitar em bloco transforma a rede de segurança em teatro. As fixtures estão descritas em
+[`testes/fixtures/LEIA-ME.md`](testes/fixtures/LEIA-ME.md).
 
 ## Licença
 

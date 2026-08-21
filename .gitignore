@@ -9,3 +9,9 @@ briefing.json
 briefing_site.json
 inventario_midias.html
 public/assets/
+
+# ...menos dentro da suite: as linhas acima nao tem barra, entao casam em qualquer
+# nivel, e o instantaneo mais importante do repo (o plano gerado) seria silenciosamente
+# nao versionado. Confira com: git check-ignore -v testes/instantaneos/*/midias.json
+!testes/fixtures/**
+!testes/instantaneos/**

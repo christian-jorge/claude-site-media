@@ -1,0 +1,129 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "public",
+  "saida": "public/img",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "capa",
+      "tipo": "imagem",
+      "destino": "public/img/capa.webp",
+      "destino_origem": "arquivo-existente",
+      "aspect_ratio": "21:9",
+      "razao_exibicao": "2.667:1",
+      "largura": 1600,
+      "altura": 600,
+      "qualidade": "2K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:9",
+        "tag": "img",
+        "src": "/public/img/capa.webp",
+        "alt": "recepcao",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Atendimento no seu bairro",
+        "Consulta em ate 48 horas, sem fila e sem convenio."
+      ],
+      "revisar": [
+        "a caixa do site e 2.667:1, que nao e razao da API: gera em 21:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {
+        "situacao": "gerado",
+        "arquivo": "public/img/capa.webp"
+      }
+    },
+    {
+      "id": "dra-marina",
+      "tipo": "imagem",
+      "destino": "assets/equipe/dra-marina.png",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "4:5",
+      "largura": 320,
+      "altura": 400,
+      "qualidade": "1K",
+      "dimensao_origem": "css:.retrato",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "index.html:15",
+        "tag": "img",
+        "src": "assets/equipe/dra-marina.png",
+        "alt": "Dra. Marina",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Quem atende",
+        "Tres medicas de familia e uma enfermeira coordenadora."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {
+        "situacao": "gerado",
+        "arquivo": "assets/equipe/dra-marina.png"
+      }
+    },
+    {
+      "id": "dra-clara",
+      "tipo": "imagem",
+      "destino": "assets/equipe/dra-clara.png",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "4:5",
+      "largura": 320,
+      "altura": 400,
+      "qualidade": "1K",
+      "dimensao_origem": "css:.retrato",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "index.html:16",
+        "tag": "img",
+        "src": "assets/equipe/dra-clara.png",
+        "alt": "Dra. Clara",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Quem atende",
+        "Tres medicas de familia e uma enfermeira coordenadora."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "mapa-bairro",
+      "tipo": "imagem",
+      "destino": "public/img/mapa-bairro.jpg",
+      "destino_origem": "pasta-existente:raiz",
+      "aspect_ratio": "21:9",
+      "razao_exibicao": "4.286:1",
+      "largura": 1200,
+      "altura": 280,
+      "qualidade": "2K",
+      "dimensao_origem": "css:.faixa-mapa",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "css/site.css:?",
+        "tag": "css-background",
+        "src": "/public/img/mapa-bairro.jpg",
+        "alt": "",
+        "copy_origem": "ausente"
+      },
+      "copy": [],
+      "revisar": [
+        "nenhuma copy no bloco: confirme o assunto com o usuario, senao o prompt sai generico",
+        "a caixa do site e 4.286:1, que nao e razao da API: gera em 21:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

@@ -2,31 +2,52 @@
  * scroll-video.js — vincula o currentTime de um <video> a posicao de rolagem.
  *
  * Uso no HTML:
- *   <video class="scroll-driven" src="public/assets/hero.mp4"
- *          poster="public/assets/hero-poster.jpg" muted playsinline preload="auto"></video>
+ *   <video class="scroll-driven" src="/assets/hero.mp4"
+ *          poster="/assets/hero-poster.jpg" muted playsinline preload="auto"></video>
  *
  * Atributos opcionais:
- *   data-scroll-start="0.0"   fracao da viewport em que o scrub comeca (0 = topo)
- *   data-scroll-end="1.0"     fracao da viewport em que o scrub termina
- *   data-smooth="0.12"        suavizacao 0..1 (menor = mais suave; 1 = sem suavizacao)
+ *   data-scroll-start="0.0"    fracao do percurso em que o scrub comeca
+ *   data-scroll-start="auto"   calcula sozinho para video que ja nasce visivel (hero no topo)
+ *   data-scroll-end="1.0"      fracao do percurso em que o scrub termina
+ *   data-smooth="0.12"         suavizacao em (0,1]; 1 = sem suavizacao
  *
  * Detalhes que importam:
  *   - o scrub roda em requestAnimationFrame, nao no evento de scroll (evita jank);
  *   - espera loadedmetadata, pois video.duration e NaN antes disso;
  *   - IntersectionObserver desliga o loop quando o video sai da tela;
- *   - respeita prefers-reduced-motion: o video congela no poster/primeiro frame.
+ *   - respeita prefers-reduced-motion: o video congela no poster/primeiro frame,
+ *     mas continua mudo, inline e pausado -- e volta a animar se a preferencia mudar.
  */
 (function () {
   "use strict";
 
-  var SEM_MOVIMENTO = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var CONSULTA_MOVIMENTO = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduzido = CONSULTA_MOVIMENTO.matches;
+  // abaixo disto o navegador nem repinta o frame: escrever de novo so gera seek
+  var TOLERANCIA = 0.005;
 
   function limitar(v, min, max) {
     return v < min ? min : v > max ? max : v;
   }
 
+  function avisar(video, msg) {
+    if (window.console && console.warn) {
+      console.warn("scroll-video: " +
+        (video.id || video.currentSrc || video.src || "<video>") + ": " + msg);
+    }
+  }
+
+  function preparar(video) {
+    video.muted = true;
+    video.playsInline = true;
+    video.pause();
+  }
+
   function Scrubber(video) {
     this.video = video;
+    // "auto" resolve o hero no topo da pagina: ele ja nasce com parte do percurso
+    // gasta, e sem isto o clipe termina antes da primeira tela
+    this.inicioAuto = video.dataset.scrollStart === "auto";
     this.inicio = parseFloat(video.dataset.scrollStart);
     this.fim = parseFloat(video.dataset.scrollEnd);
     this.suavizacao = parseFloat(video.dataset.smooth);
@@ -34,14 +55,23 @@
     if (isNaN(this.fim)) this.fim = 1;
     if (isNaN(this.suavizacao)) this.suavizacao = 0.12;
 
+    if (!(this.suavizacao > 0) || this.suavizacao > 1) {
+      // data-smooth="0" era sugerido pela propria doc e travava o rAF para sempre
+      avisar(video, 'data-smooth="' + video.dataset.smooth + '" fora de (0,1]; usando 0.12');
+      this.suavizacao = 0.12;
+    }
+    if (!this.inicioAuto && !(this.fim > this.inicio)) {
+      avisar(video, "data-scroll-start (" + this.inicio + ") >= data-scroll-end (" +
+        this.fim + "); usando 0..1");
+      this.inicio = 0;
+      this.fim = 1;
+    }
+
     this.tempoAtual = 0;
+    this.escrito = undefined;
     this.visivel = false;
     this.rodando = false;
     this.pronto = false;
-
-    video.muted = true;
-    video.playsInline = true;
-    video.pause();
 
     var self = this;
     if (video.readyState >= 1) {
@@ -52,9 +82,12 @@
         self.agendar();
       }, { once: true });
     }
+    // sem isto o loop morria durante um seek e so voltava no proximo scroll
+    video.addEventListener("seeked", function () { self.agendar(); });
 
     new IntersectionObserver(function (entradas) {
-      self.visivel = entradas[0].isIntersecting;
+      // a ULTIMA entrada e o estado atual; a primeira e a mais velha do lote
+      self.visivel = entradas[entradas.length - 1].isIntersecting;
       if (self.visivel) self.agendar();
     }, { rootMargin: "20% 0px" }).observe(video);
   }
@@ -63,15 +96,16 @@
   Scrubber.prototype.progresso = function () {
     var r = this.video.getBoundingClientRect();
     var vh = window.innerHeight || document.documentElement.clientHeight;
-    var percorrido = vh - r.top;
-    var total = vh + r.height;
-    var bruto = total > 0 ? percorrido / total : 0;
-    var faixa = this.fim - this.inicio;
-    return limitar(faixa > 0 ? (bruto - this.inicio) / faixa : bruto, 0, 1);
+    // altura 0 no instante do loadedmetadata devolvia 100%: o hero abria no ULTIMO frame
+    if (!r.height || !vh) return 0;
+    var bruto = (vh - r.top) / (vh + r.height);
+    var inicio = this.inicioAuto ? vh / (vh + r.height) : this.inicio;
+    if (!(this.fim > inicio)) return limitar(bruto, 0, 1);
+    return limitar((bruto - inicio) / (this.fim - inicio), 0, 1);
   };
 
   Scrubber.prototype.agendar = function () {
-    if (this.rodando || !this.visivel || !this.pronto) return;
+    if (reduzido || this.rodando || !this.visivel || !this.pronto) return;
     this.rodando = true;
     var self = this;
     requestAnimationFrame(function () {
@@ -83,24 +117,30 @@
   Scrubber.prototype.aplicar = function () {
     var duracao = this.video.duration;
     if (!duracao || !isFinite(duracao)) return;
+    if (this.video.seeking) return;   // seek em curso: o 'seeked' reagenda
 
     var alvo = this.progresso() * duracao;
     this.tempoAtual += (alvo - this.tempoAtual) * this.suavizacao;
-
-    // Snap no fim da interpolacao para nao ficar oscilando em fracoes de frame.
+    // snap no fim da interpolacao para nao ficar oscilando em fracoes de frame
     if (Math.abs(alvo - this.tempoAtual) < 0.01) this.tempoAtual = alvo;
 
-    if (this.video.seeking === false) {
-      this.video.currentTime = limitar(this.tempoAtual, 0, duracao - 0.001);
+    var novo = limitar(this.tempoAtual, 0, duracao - 0.001);
+    if (this.escrito === undefined || Math.abs(this.escrito - novo) > TOLERANCIA) {
+      this.escrito = novo;
+      this.video.currentTime = novo;
     }
-
-    // Continua o loop enquanto ainda houver distancia a percorrer.
-    if (this.visivel && this.tempoAtual !== alvo) this.agendar();
+    // continua enquanto houver distancia REAL a percorrer; comparar floats por
+    // igualdade deixava o loop vivo indefinidamente
+    if (this.visivel && Math.abs(alvo - this.tempoAtual) > TOLERANCIA) this.agendar();
   };
 
   function iniciar() {
     var videos = document.querySelectorAll("video.scroll-driven");
-    if (!videos.length || SEM_MOVIMENTO) return;
+    if (!videos.length) return;
+
+    // muted/playsInline/pause valem SEMPRE: sem eles, o iOS abre em fullscreen e
+    // o Chrome bloqueia -- inclusive sob prefers-reduced-motion
+    Array.prototype.forEach.call(videos, preparar);
 
     var scrubbers = Array.prototype.map.call(videos, function (v) {
       return new Scrubber(v);
@@ -112,6 +152,22 @@
 
     window.addEventListener("scroll", atualizarTodos, { passive: true });
     window.addEventListener("resize", atualizarTodos, { passive: true });
+
+    // o layout tambem muda sem scroll e sem resize: fonte que carrega, imagem que
+    // chega, acordeao que abre acima do video
+    if (typeof ResizeObserver === "function") {
+      var ro = new ResizeObserver(atualizarTodos);
+      ro.observe(document.documentElement);
+      for (var j = 0; j < videos.length; j++) ro.observe(videos[j]);
+    }
+
+    if (CONSULTA_MOVIMENTO.addEventListener) {
+      CONSULTA_MOVIMENTO.addEventListener("change", function (e) {
+        reduzido = e.matches;
+        if (!reduzido) atualizarTodos();
+      });
+    }
+
     atualizarTodos();
   }
 

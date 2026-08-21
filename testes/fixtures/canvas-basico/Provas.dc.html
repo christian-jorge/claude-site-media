@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8">
+<style>:root{ --cor-fundo:#0b0f14; } .foto-card{ background:#1b232c; }</style></head>
+<body>
+  <section class="provas">
+    <h2>Quem ja ligou os dois lados</h2>
+    <p>Padarias, mercadinhos e uma rede de tres farmacias.</p>
+    <sc-for list="{{cards}}" as="card" hint-placeholder-count="3">
+      <figure class="cartao">
+        <div class="foto-card" style="width:420px;aspect-ratio:3/4"></div>
+        <figcaption>{{card.titulo}}</figcaption>
+      </figure>
+    </sc-for>
+  </section>
+  <script data-dc-script data-props='{"$preview":{"w":1440,"h":760},"tom":"claro"}'>
+    function renderVals() {
+      return {
+        cards: [
+          { titulo: 'Padaria Aurora', foto: 'padaria.jpg', legenda: 'Fila caiu pela metade' },
+          { titulo: 'Mercado do Ze', foto: 'mercado.jpg', legenda: 'Estoque bate com o caixa' },
+          { titulo: 'Farmacia Vida', foto: 'farmacia.jpg', legenda: 'Tres lojas, um estoque' }
+        ]
+      }
+    }
+  </script>
+</body>
+</html>

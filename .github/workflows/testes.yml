@@ -1,0 +1,41 @@
+name: testes
+
+# A matriz e o ponto, nao o enfeite: as ferramentas fazem replace("\\", "/") em seis
+# lugares e os instantaneos sao gravados no Windows. So um leg Linux prova que valem la.
+on:
+  push:
+  pull_request:
+
+jobs:
+  suite:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        # 3.9 porque as ferramentas sao escritas em estilo compativel (HTMLParser.__init__
+        # explicito, formatacao com %, nenhum walrus) e vale garantir que continue assim
+        python: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Instalar Pillow
+        run: python -m pip install --upgrade pip pillow
+
+      - name: Rodar a suite
+        run: python testes/rodar.py
+
+      - name: Conferir que nenhum instantaneo mudou
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain testes/)" ]; then
+            echo "A suite alterou arquivos versionados em testes/:"
+            git status --porcelain testes/
+            git diff -- testes/
+            exit 1
+          fi

@@ -1,0 +1,7 @@
+listar_modelos  cobra=False
+estimar_custo  cobra=False
+gerar_imagem  cobra=True
+gerar_video  cobra=True
+status_video  cobra=False
+preparar_video  cobra=False
+atualizar_inventario  cobra=False

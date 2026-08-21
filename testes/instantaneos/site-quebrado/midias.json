@@ -1,0 +1,70 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "",
+  "saida": "img",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "palco",
+      "tipo": "imagem",
+      "destino": "img/palco.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "16:9",
+      "razao_exibicao": "1.885:1",
+      "largura": 980,
+      "altura": 520,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:7",
+        "tag": "img",
+        "src": "img/palco.jpg",
+        "alt": "palco",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Programacao",
+        "Tres dias de mesa, sebo e cafe — entrada franca.",
+        "Sabado 10h < mesa de abertura > domingo 18h."
+      ],
+      "revisar": [
+        "a caixa do site e 1.885:1, que nao e razao da API: gera em 16:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "mesa",
+      "tipo": "imagem",
+      "destino": "img/mesa.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": null,
+      "qualidade": "1K",
+      "dimensao_origem": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "origem": {
+        "arquivo": "index.html:11",
+        "tag": "img",
+        "src": "img/mesa.jpg",
+        "alt": "mesa de debate",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Programacao",
+        "Tres dias de mesa, sebo e cafe — entrada franca.",
+        "Sabado 10h < mesa de abertura > domingo 18h."
+      ],
+      "revisar": [
+        "dimensao nao declarada no site - confirme antes de gerar"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

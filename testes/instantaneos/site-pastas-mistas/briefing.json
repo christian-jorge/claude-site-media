@@ -1,0 +1,106 @@
+{
+  "raiz_servico": "public",
+  "arquivos_lidos": [
+    "index.html",
+    "css/site.css"
+  ],
+  "slots": [
+    {
+      "id": "capa",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 9,
+      "tag": "img",
+      "secao": "capa",
+      "src": "/public/img/capa.webp",
+      "src_dinamico": false,
+      "arquivo_existe": true,
+      "destino": "public/img/capa.webp",
+      "destino_origem": "arquivo-existente",
+      "alt": "recepcao",
+      "largura": 1600,
+      "altura": 600,
+      "aspect_ratio": "2.667:1",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Atendimento no seu bairro",
+        "Consulta em ate 48 horas, sem fila e sem convenio."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "dra-marina",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 15,
+      "tag": "img",
+      "secao": "equipe",
+      "src": "assets/equipe/dra-marina.png",
+      "src_dinamico": false,
+      "arquivo_existe": true,
+      "destino": "assets/equipe/dra-marina.png",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "Dra. Marina",
+      "largura": 320,
+      "altura": 400,
+      "aspect_ratio": "4:5",
+      "origem_dimensao": "css:.retrato",
+      "dimensao_confianca": "derivada",
+      "copy": [
+        "Quem atende",
+        "Tres medicas de familia e uma enfermeira coordenadora."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "dra-clara",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 16,
+      "tag": "img",
+      "secao": "equipe",
+      "src": "assets/equipe/dra-clara.png",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "assets/equipe/dra-clara.png",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "Dra. Clara",
+      "largura": 320,
+      "altura": 400,
+      "aspect_ratio": "4:5",
+      "origem_dimensao": "css:.retrato",
+      "dimensao_confianca": "derivada",
+      "copy": [
+        "Quem atende",
+        "Tres medicas de familia e uma enfermeira coordenadora."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "mapa-bairro",
+      "tipo": "imagem",
+      "arquivo": "css/site.css",
+      "linha": null,
+      "tag": "css-background",
+      "secao": ".faixa-mapa",
+      "src": "/public/img/mapa-bairro.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "public/img/mapa-bairro.jpg",
+      "destino_origem": "pasta-existente:raiz",
+      "alt": "",
+      "largura": 1200,
+      "altura": 280,
+      "aspect_ratio": "4.286:1",
+      "origem_dimensao": "css:.faixa-mapa",
+      "dimensao_confianca": "derivada",
+      "copy": [],
+      "copy_origem": "ausente"
+    }
+  ],
+  "google_fonts": [],
+  "tokens": {},
+  "paleta": [],
+  "fontes": []
+}

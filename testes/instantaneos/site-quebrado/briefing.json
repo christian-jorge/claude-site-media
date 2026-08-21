@@ -1,0 +1,62 @@
+{
+  "raiz_servico": "",
+  "arquivos_lidos": [
+    "index.html"
+  ],
+  "slots": [
+    {
+      "id": "palco",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 7,
+      "tag": "img",
+      "secao": "destaque",
+      "src": "img/palco.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "img/palco.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "palco",
+      "largura": 980,
+      "altura": 520,
+      "aspect_ratio": "1.885:1",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Programacao",
+        "Tres dias de mesa, sebo e cafe — entrada franca.",
+        "Sabado 10h < mesa de abertura > domingo 18h."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "mesa",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 11,
+      "tag": "img",
+      "secao": "destaque",
+      "src": "img/mesa.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "img/mesa.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "mesa de debate",
+      "largura": null,
+      "altura": null,
+      "aspect_ratio": null,
+      "origem_dimensao": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "copy": [
+        "Programacao",
+        "Tres dias de mesa, sebo e cafe — entrada franca.",
+        "Sabado 10h < mesa de abertura > domingo 18h."
+      ],
+      "copy_origem": "bloco"
+    }
+  ],
+  "google_fonts": [],
+  "tokens": {},
+  "paleta": [],
+  "fontes": []
+}

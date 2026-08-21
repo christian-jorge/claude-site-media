@@ -1,0 +1,103 @@
+{
+  "raiz_servico": "public",
+  "arquivos_lidos": [
+    "components/Cartao.vue",
+    "components/Faixa.svelte"
+  ],
+  "slots": [
+    {
+      "id": "aluna-treinando",
+      "tipo": "imagem",
+      "arquivo": "components/Cartao.vue",
+      "linha": 5,
+      "tag": "img",
+      "secao": null,
+      "src": "foto",
+      "src_dinamico": true,
+      "arquivo_existe": null,
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "alt": "aluna treinando",
+      "largura": null,
+      "altura": null,
+      "aspect_ratio": null,
+      "origem_dimensao": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "copy": [
+        "Plano Semestral",
+        "Seis meses de acompanhamento com avaliacao a cada trinta dias."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "selo-semestral",
+      "tipo": "imagem",
+      "arquivo": "components/Cartao.vue",
+      "linha": 6,
+      "tag": "nuxtimg",
+      "secao": null,
+      "src": "/img/selo-semestral.png",
+      "src_dinamico": false,
+      "arquivo_existe": true,
+      "destino": "public/img/selo-semestral.png",
+      "destino_origem": "arquivo-existente",
+      "alt": "selo",
+      "largura": 240,
+      "altura": 240,
+      "aspect_ratio": "1:1",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [],
+      "copy_origem": "ausente"
+    },
+    {
+      "id": "sala-de-treino",
+      "tipo": "imagem",
+      "arquivo": "components/Faixa.svelte",
+      "linha": 8,
+      "tag": "img",
+      "secao": null,
+      "src": "",
+      "src_dinamico": true,
+      "arquivo_existe": null,
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "alt": "sala de treino",
+      "largura": null,
+      "altura": null,
+      "aspect_ratio": null,
+      "origem_dimensao": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "copy": [
+        "Primeira aula sem custo",
+        "Traga roupa de treino e uma garrafa d'agua."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "mesma-sala-outro-angulo",
+      "tipo": "imagem",
+      "arquivo": "components/Faixa.svelte",
+      "linha": 9,
+      "tag": "img",
+      "secao": null,
+      "src": "/img/faixa-2x.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": null,
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "alt": "mesma sala, outro angulo",
+      "largura": null,
+      "altura": null,
+      "aspect_ratio": null,
+      "origem_dimensao": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "copy": [],
+      "copy_origem": "ausente"
+    }
+  ],
+  "google_fonts": [],
+  "tokens": {},
+  "paleta": [],
+  "fontes": []
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "artboard": "Abertura",
+    "arquivo": "Abertura.dc.html",
+    "pagina": "p1",
+    "ordem": 1,
+    "frame": {
+      "w": 1440,
+      "h": 900
+    },
+    "midias": [
+      {
+        "rotulo": "painel em uso",
+        "tag": "img",
+        "motivo": "tag <img>",
+        "tipo": "imagem",
+        "src": "",
+        "alt": "painel em uso",
+        "largura": 1200,
+        "altura": 675,
+        "aspect_ratio": "16:9",
+        "dimensao_origem": "style",
+        "dimensao_confianca": "declarada",
+        "revisar": []
+      }
+    ],
+    "google_fonts": [
+      "Space Grotesk (500, 700)"
+    ],
+    "font_family_declaradas": [
+      "Space Grotesk, sans-serif"
+    ],
+    "paleta": [
+      {
+        "cor": "#0b0f14",
+        "ocorrencias": 1
+      },
+      {
+        "cor": "#4fd1a5",
+        "ocorrencias": 1
+      },
+      {
+        "cor": "#eaf2ef",
+        "ocorrencias": 1
+      },
+      {
+        "cor": "#1b232c",
+        "ocorrencias": 1
+      }
+    ],
+    "css_variaveis": {
+      "--cor-fundo": "#0b0f14",
+      "--cor-realce": "#4fd1a5",
+      "--cor-texto": "#eaf2ef"
+    },
+    "props": {},
+    "copy": [
+      {
+        "tag": "h1",
+        "texto": "Seu estoque conversa com o caixa",
+        "pos": 0
+      },
+      {
+        "tag": "p",
+        "texto": "Integracao em uma tarde — sem trocar o sistema que voce ja usa.",
+        "pos": 0
+      },
+      {
+        "tag": "button",
+        "texto": "Comecar agora",
+        "pos": 1
+      }
+    ],
+    "avisos": []
+  },
+  {
+    "artboard": "Provas",
+    "arquivo": "Provas.dc.html",
+    "pagina": "p1",
+    "ordem": 2,
+    "frame": {
+      "w": 1440,
+      "h": 760
+    },
+    "midias": [
+      {
+        "rotulo": "Padaria Aurora",
+        "tag": "div",
+        "motivo": "classe/id com 'foto'",
+        "tipo": "imagem",
+        "src": "padaria.jpg",
+        "alt": "",
+        "largura": null,
+        "altura": null,
+        "aspect_ratio": "3:4",
+        "razao_exibicao": "3/4",
+        "dimensao_origem": "style",
+        "dimensao_confianca": "derivada",
+        "revisar": [
+          "a caixa do artboard e 3/4, que nao e razao da API: gera em 3:4 e corta com object-fit: cover"
+        ],
+        "template": {
+          "lista": "cards",
+          "alias": "card",
+          "hint": 3,
+          "src_hole": null
+        },
+        "copy_do_registro": [
+          "Padaria Aurora",
+          "Fila caiu pela metade"
+        ],
+        "repetido": "1 de 3 (cards)"
+      },
+      {
+        "rotulo": "Mercado do Ze",
+        "tag": "div",
+        "motivo": "classe/id com 'foto'",
+        "tipo": "imagem",
+        "src": "mercado.jpg",
+        "alt": "",
+        "largura": null,
+        "altura": null,
+        "aspect_ratio": "3:4",
+        "razao_exibicao": "3/4",
+        "dimensao_origem": "style",
+        "dimensao_confianca": "derivada",
+        "revisar": [
+          "a caixa do artboard e 3/4, que nao e razao da API: gera em 3:4 e corta com object-fit: cover"
+        ],
+        "template": {
+          "lista": "cards",
+          "alias": "card",
+          "hint": 3,
+          "src_hole": null
+        },
+        "copy_do_registro": [
+          "Mercado do Ze",
+          "Estoque bate com o caixa"
+        ],
+        "repetido": "2 de 3 (cards)"
+      },
+      {
+        "rotulo": "Farmacia Vida",
+        "tag": "div",
+        "motivo": "classe/id com 'foto'",
+        "tipo": "imagem",
+        "src": "farmacia.jpg",
+        "alt": "",
+        "largura": null,
+        "altura": null,
+        "aspect_ratio": "3:4",
+        "razao_exibicao": "3/4",
+        "dimensao_origem": "style",
+        "dimensao_confianca": "derivada",
+        "revisar": [
+          "a caixa do artboard e 3/4, que nao e razao da API: gera em 3:4 e corta com object-fit: cover"
+        ],
+        "template": {
+          "lista": "cards",
+          "alias": "card",
+          "hint": 3,
+          "src_hole": null
+        },
+        "copy_do_registro": [
+          "Farmacia Vida",
+          "Tres lojas, um estoque"
+        ],
+        "repetido": "3 de 3 (cards)"
+      }
+    ],
+    "google_fonts": [],
+    "font_family_declaradas": [],
+    "paleta": [
+      {
+        "cor": "#0b0f14",
+        "ocorrencias": 1
+      },
+      {
+        "cor": "#1b232c",
+        "ocorrencias": 1
+      }
+    ],
+    "css_variaveis": {
+      "--cor-fundo": "#0b0f14"
+    },
+    "props": {
+      "$preview": {
+        "w": 1440,
+        "h": 760
+      },
+      "tom": "claro"
+    },
+    "copy": [
+      {
+        "tag": "h2",
+        "texto": "Quem ja ligou os dois lados",
+        "pos": 0
+      },
+      {
+        "tag": "p",
+        "texto": "Padarias, mercadinhos e uma rede de tres farmacias.",
+        "pos": 0
+      },
+      {
+        "tag": "figcaption",
+        "texto": "{{card.titulo}}",
+        "pos": 1
+      }
+    ],
+    "avisos": []
+  }
+]

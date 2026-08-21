@@ -1,0 +1,19 @@
+  hero             gemini-3-pro-image-preview 2K                  US$ 0.134
+        -> public/assets/hero.jpg
+        [!] prompt em branco: escreva antes de aprovar
+  card             gemini-3-pro-image-preview 1K                  US$ 0.134  <- ja existe em disco (public/assets/card.jpg)
+        -> public/assets/card.jpg
+  hero-video       veo-3.1-fast-generate-preview 4s 720p          US$ 0.400
+        -> public/assets/hero-video.mp4   [!] dimensao SUPOSTA: dimensao nao declarada no site - confirme antes de gerar
+        [!] prompt em branco: escreva antes de aprovar
+  sem-preco        modelo-que-nao-existe 1K                       custo DESCONHECIDO
+        -> public/assets/sem-preco.jpg   [!] dimensao SUPOSTA: dimensao nao declarada no site - confirme antes de gerar
+        [!] prompt em branco: escreva antes de aprovar
+ATENCAO: 1 item(ns) sem preco conhecido na tabela (sem-preco). O total abaixo e um PISO, nao o valor final -- confirme o preco desses modelos em ai.google.dev/gemini-api/docs/pricing antes de aprovar.
+TOTAL ESTIMADO (PISO): US$ 0.67 em 4 itens
+DESTE TOTAL, US$ 0.13 em 1 item(ns) que JA EXISTEM em disco (card): so cobre de novo se a intencao for regerar.
+Gerar so o que falta custa US$ 0.53.
+
+PARADA 2: mostre esta lista e o total ao usuario e espere aprovacao
+explicita. Depois do aval, passe orcamento:"orc-<TOKEN>" em cada
+gerar_imagem/gerar_video (vale 60 min, um uso por item).

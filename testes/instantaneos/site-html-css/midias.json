@@ -1,0 +1,180 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "public",
+  "saida": "public/img",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "hero-poster",
+      "tipo": "imagem",
+      "destino": "public/img/hero-poster.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "16:9",
+      "largura": 1280,
+      "altura": 720,
+      "qualidade": "2K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:13",
+        "tag": "video-poster",
+        "src": "public/img/hero-poster.jpg",
+        "alt": "",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Ceramica feita a mao",
+        "Pecas unicas, tornadas e queimadas no ateliê de Tiradentes."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "hero",
+      "tipo": "video",
+      "destino": "public/img/hero.mp4",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "16:9",
+      "largura": 1280,
+      "altura": 720,
+      "duracao_s": 4,
+      "resolucao": "720p",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:13",
+        "tag": "video",
+        "src": "public/img/hero.mp4",
+        "alt": "",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Ceramica feita a mao",
+        "Pecas unicas, tornadas e queimadas no ateliê de Tiradentes."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "torno",
+      "tipo": "imagem",
+      "destino": "public/img/torno.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "4:3",
+      "largura": 420,
+      "altura": 315,
+      "qualidade": "1K",
+      "dimensao_origem": "css:.card .card-media",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "index.html:23",
+        "tag": "img",
+        "src": "public/img/torno.jpg",
+        "alt": "maos no torno",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Torno",
+        "Cada peca passa quarenta minutos no torno antes de descansar."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {
+        "situacao": "gerado",
+        "arquivo": "public/img/torno.jpg"
+      }
+    },
+    {
+      "id": "queima",
+      "tipo": "imagem",
+      "destino": "public/img/queima.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "4:3",
+      "largura": 420,
+      "altura": 315,
+      "qualidade": "1K",
+      "dimensao_origem": "css:.card .card-media",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "index.html:28",
+        "tag": "img",
+        "src": "public/img/queima.jpg",
+        "alt": "forno aberto",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Queima",
+        "Forno a lenha, 1240 graus, doze horas de subida."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "esmalte",
+      "tipo": "imagem",
+      "destino": "public/img/esmalte.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "4:3",
+      "largura": 420,
+      "altura": 315,
+      "qualidade": "1K",
+      "dimensao_origem": "css:.card .card-media",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "index.html:33",
+        "tag": "img",
+        "src": "public/img/esmalte.jpg",
+        "alt": "pote de esmalte",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Esmalte",
+        "Esmaltes minerais preparados na casa, sem chumbo."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "faixa-ateliê",
+      "tipo": "imagem",
+      "destino": "public/img/faixa-ateliê.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "21:9",
+      "razao_exibicao": "4.000:1",
+      "largura": 1440,
+      "altura": 360,
+      "qualidade": "2K",
+      "dimensao_origem": "css:.faixa-rodape",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "estilo.css:?",
+        "tag": "css-background",
+        "src": "public/img/faixa-ateliê.jpg",
+        "alt": "",
+        "copy_origem": "css:.faixa-rodape"
+      },
+      "copy": [
+        "Visite o ateliê",
+        "Rua do Chafariz, 88 — de quinta a domingo."
+      ],
+      "revisar": [
+        "a caixa do site e 4.000:1, que nao e razao da API: gera em 21:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

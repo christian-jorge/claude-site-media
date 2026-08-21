@@ -1,0 +1,82 @@
+{
+  "raiz_servico": "",
+  "arquivos_lidos": [
+    "estilo.css",
+    "index.html"
+  ],
+  "slots": [
+    {
+      "id": "hero",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 8,
+      "tag": "img",
+      "secao": "loja-centro",
+      "src": "centro/hero.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "centro/hero.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "fachada da loja",
+      "largura": 800,
+      "altura": 450,
+      "aspect_ratio": "16:9",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Loja do Centro",
+        "Aberta desde 1998, na esquina da praca."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "hero-2",
+      "tipo": "imagem",
+      "arquivo": "index.html",
+      "linha": 13,
+      "tag": "img",
+      "secao": "loja-praia",
+      "src": "praia/hero.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "praia/hero.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "fachada da loja",
+      "largura": 800,
+      "altura": 450,
+      "aspect_ratio": "16:9",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Loja da Praia",
+        "Aberta no verao de 2019, de frente para o mar."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "faixa",
+      "tipo": "imagem",
+      "arquivo": "estilo.css",
+      "linha": null,
+      "tag": "css-background",
+      "secao": ".faixa",
+      "src": "img/faixa.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "img/faixa.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "alt": "",
+      "largura": 1200,
+      "altura": 300,
+      "aspect_ratio": "4.000:1",
+      "origem_dimensao": "css:.faixa",
+      "dimensao_confianca": "derivada",
+      "copy": [],
+      "copy_origem": "ausente"
+    }
+  ],
+  "google_fonts": [],
+  "tokens": {},
+  "paleta": [],
+  "fontes": []
+}

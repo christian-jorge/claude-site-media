@@ -1,0 +1,122 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "public",
+  "saida": "public/img",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "aluna-treinando",
+      "tipo": "imagem",
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "aspect_ratio": null,
+      "qualidade": "1K",
+      "dimensao_origem": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "origem": {
+        "arquivo": "components/Cartao.vue:5",
+        "tag": "img",
+        "src": "foto",
+        "alt": "aluna treinando",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Plano Semestral",
+        "Seis meses de acompanhamento com avaliacao a cada trinta dias."
+      ],
+      "revisar": [
+        "sem destino conhecido (src-dinamico): descubra o arquivo que a pagina pede antes de gerar, senao o asset cai onde ninguem procura",
+        "dimensao nao declarada no site - confirme antes de gerar"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "selo-semestral",
+      "tipo": "imagem",
+      "destino": "public/img/selo-semestral.png",
+      "destino_origem": "arquivo-existente",
+      "aspect_ratio": "1:1",
+      "largura": 240,
+      "altura": 240,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "components/Cartao.vue:6",
+        "tag": "nuxtimg",
+        "src": "/img/selo-semestral.png",
+        "alt": "selo",
+        "copy_origem": "ausente"
+      },
+      "copy": [],
+      "revisar": [
+        "nenhuma copy no bloco: confirme o assunto com o usuario, senao o prompt sai generico"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {
+        "situacao": "gerado",
+        "arquivo": "public/img/selo-semestral.png"
+      }
+    },
+    {
+      "id": "sala-de-treino",
+      "tipo": "imagem",
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "aspect_ratio": null,
+      "qualidade": "1K",
+      "dimensao_origem": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "origem": {
+        "arquivo": "components/Faixa.svelte:8",
+        "tag": "img",
+        "src": "",
+        "alt": "sala de treino",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Primeira aula sem custo",
+        "Traga roupa de treino e uma garrafa d'agua."
+      ],
+      "revisar": [
+        "sem destino conhecido (src-dinamico): descubra o arquivo que a pagina pede antes de gerar, senao o asset cai onde ninguem procura",
+        "dimensao nao declarada no site - confirme antes de gerar"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "mesma-sala-outro-angulo",
+      "tipo": "imagem",
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "aspect_ratio": null,
+      "qualidade": "1K",
+      "dimensao_origem": "desconhecida",
+      "dimensao_confianca": "suposta",
+      "origem": {
+        "arquivo": "components/Faixa.svelte:9",
+        "tag": "img",
+        "src": "/img/faixa-2x.jpg",
+        "alt": "mesma sala, outro angulo",
+        "copy_origem": "ausente"
+      },
+      "copy": [],
+      "revisar": [
+        "sem destino conhecido (src-dinamico): descubra o arquivo que a pagina pede antes de gerar, senao o asset cai onde ninguem procura",
+        "dimensao nao declarada no site - confirme antes de gerar",
+        "nenhuma copy no bloco: confirme o assunto com o usuario, senao o prompt sai generico"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

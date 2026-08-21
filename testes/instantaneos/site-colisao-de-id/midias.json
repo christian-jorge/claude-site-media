@@ -1,0 +1,93 @@
+{
+  "versao": 2,
+  "provedor": "google-midia",
+  "raiz": "<RAIZ>",
+  "raiz_servico": "",
+  "saida": "centro",
+  "inventario": "inventario_midias.html",
+  "referencias": [],
+  "itens": [
+    {
+      "id": "hero",
+      "tipo": "imagem",
+      "destino": "centro/hero.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "16:9",
+      "largura": 800,
+      "altura": 450,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:8",
+        "tag": "img",
+        "src": "centro/hero.jpg",
+        "alt": "fachada da loja",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Loja do Centro",
+        "Aberta desde 1998, na esquina da praca."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "hero-2",
+      "tipo": "imagem",
+      "destino": "praia/hero.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "16:9",
+      "largura": 800,
+      "altura": 450,
+      "qualidade": "1K",
+      "dimensao_origem": "atributo",
+      "dimensao_confianca": "declarada",
+      "origem": {
+        "arquivo": "index.html:13",
+        "tag": "img",
+        "src": "praia/hero.jpg",
+        "alt": "fachada da loja",
+        "copy_origem": "bloco"
+      },
+      "copy": [
+        "Loja da Praia",
+        "Aberta no verao de 2019, de frente para o mar."
+      ],
+      "revisar": [],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    },
+    {
+      "id": "faixa",
+      "tipo": "imagem",
+      "destino": "img/faixa.jpg",
+      "destino_origem": "relativo-ao-arquivo",
+      "aspect_ratio": "21:9",
+      "razao_exibicao": "4.000:1",
+      "largura": 1200,
+      "altura": 300,
+      "qualidade": "2K",
+      "dimensao_origem": "css:.faixa",
+      "dimensao_confianca": "derivada",
+      "origem": {
+        "arquivo": "estilo.css:?",
+        "tag": "css-background",
+        "src": "img/faixa.jpg",
+        "alt": "",
+        "copy_origem": "ausente"
+      },
+      "copy": [],
+      "revisar": [
+        "nenhuma copy no bloco: confirme o assunto com o usuario, senao o prompt sai generico",
+        "a caixa do site e 4.000:1, que nao e razao da API: gera em 21:9 e corta com object-fit: cover"
+      ],
+      "prompt": "",
+      "aceite": "",
+      "estado": {}
+    }
+  ]
+}

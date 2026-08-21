@@ -1,0 +1,10 @@
+{
+  "pages": [{ "id": "p1", "name": "Landing" }],
+  "artboards": [
+    { "file": "Abertura.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900,
+      "title": "Abertura", "page": "p1" },
+    { "file": "Provas.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 760,
+      "title": "Provas", "page": "p1" }
+  ],
+  "launch": "Abertura.dc.html"
+}

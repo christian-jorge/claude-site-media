@@ -1,0 +1,90 @@
+{
+  "raiz_servico": "public",
+  "arquivos_lidos": [
+    "app/globals.css",
+    "app/page.tsx"
+  ],
+  "slots": [
+    {
+      "id": "cozinha-em-operacao",
+      "tipo": "imagem",
+      "arquivo": "app/page.tsx",
+      "linha": 10,
+      "tag": "image",
+      "secao": null,
+      "src": "{hero}",
+      "src_dinamico": true,
+      "arquivo_existe": null,
+      "destino": null,
+      "destino_origem": "src-dinamico",
+      "alt": "cozinha em operacao",
+      "largura": 1440,
+      "altura": 720,
+      "aspect_ratio": "2.000:1",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Marmita de comida de verdade",
+        "Cozinhamos de madrugada e entregamos antes das onze."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "etapa-escolha",
+      "tipo": "imagem",
+      "arquivo": "app/page.tsx",
+      "linha": 16,
+      "tag": "img",
+      "secao": null,
+      "src": "/img/etapa-escolha.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": true,
+      "destino": "public/img/etapa-escolha.jpg",
+      "destino_origem": "arquivo-existente",
+      "alt": "tela de escolha",
+      "largura": 480,
+      "altura": 320,
+      "aspect_ratio": "3:2",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Como funciona",
+        "Voce escolhe na segunda, a gente entrega na quarta."
+      ],
+      "copy_origem": "bloco"
+    },
+    {
+      "id": "etapa-entrega",
+      "tipo": "imagem",
+      "arquivo": "app/page.tsx",
+      "linha": 19,
+      "tag": "img",
+      "secao": null,
+      "src": "/img/etapa-entrega.jpg",
+      "src_dinamico": false,
+      "arquivo_existe": false,
+      "destino": "public/img/etapa-entrega.jpg",
+      "destino_origem": "pasta-existente:public",
+      "alt": "caixa termica",
+      "largura": 480,
+      "altura": 320,
+      "aspect_ratio": "3:2",
+      "origem_dimensao": "atributo",
+      "dimensao_confianca": "declarada",
+      "copy": [
+        "Entrega refrigerada",
+        "Caixa termica que aguenta seis horas fora da geladeira."
+      ],
+      "copy_origem": "bloco"
+    }
+  ],
+  "google_fonts": [],
+  "tokens": {},
+  "paleta": [
+    {
+      "cor": "#0f1a14",
+      "ocorrencias": 1
+    }
+  ],
+  "fontes": []
+}
